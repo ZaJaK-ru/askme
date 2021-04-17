@@ -8,6 +8,8 @@ gem 'sqlite3', '~> 1.4'
 gem 'puma', '~> 5.0'
 gem 'webpacker', '~> 5.0'
 
+gem 'email_validator'
+
 group :development, :test do
   gem 'pry-rails'
 end

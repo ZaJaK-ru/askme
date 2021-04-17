@@ -1,9 +1,9 @@
 require 'openssl'
 
 class User < ApplicationRecord
-
   ITERATION = 20000
   DIGEST = OpenSSL::Digest::SHA256.new
+  VALID_USERNAME_REGEX = /\A\w+\z/
 
   has_many :questions
 
@@ -11,6 +11,9 @@ class User < ApplicationRecord
   validates :email, :username, uniqueness: true
 
   attr_accessor :password
+
+  validates :email, email: true
+  validates :username, length: { maximum: 40 }, format: { with: VALID_USERNAME_REGEX }
 
   validates :password, presence: true, on: :create
   validates :password, confirmation: true
@@ -20,7 +23,12 @@ class User < ApplicationRecord
   def encrypt_password
     if self.password.present?
       self.password_salt = User.hash_to_string(OpenSSL::Random.random_bytes(16))
-      self.password_hash = User.hash_to_string(OpenSSL::PKCS5.pbkdf2_hmac(self.password, self.password_salt, ITERATION, DIGEST.length, DIGEST))
+
+      self.password_hash = User.hash_to_string(
+        OpenSSL::PKCS5.pbkdf2_hmac(
+          self.password, self.password_salt, ITERATION, DIGEST.length, DIGEST
+        )
+      )
     end
   end
 
