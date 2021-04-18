@@ -1,6 +1,7 @@
-import Rails from "@rails/ujs"
+require("@rails/ujs").start()
+require("jquery")
 
-Rails.start()
+import '../scripts/application'
 
 import "../styles/application"
 
