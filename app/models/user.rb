@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   has_many :questions
 
-  before_validation :normalize_username
+  before_validation :normalize_username_and_email
 
   validates :email, :username, presence: true
   validates :email, :username, uniqueness: true
@@ -42,6 +42,8 @@ class User < ApplicationRecord
     nil
   end
 
+  private
+
   def encrypt_password
     if password.present?
       self.password_salt = User.hash_to_string(OpenSSL::Random.random_bytes(16))
@@ -54,9 +56,8 @@ class User < ApplicationRecord
     end
   end
 
-  private
-
-  def normalize_username
-    self.username&.downcase!
+  def normalize_username_and_email
+    username&.downcase!
+    email&.downcase!
   end
 end

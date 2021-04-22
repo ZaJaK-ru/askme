@@ -40,7 +40,9 @@
       </div>
       <div class="form-action buffer-top">
         <%= f.submit 'Сохранить', class: 'button button-dark button-small' %>
+        <%= link_to "Удалить аккаунт", @user, method: "delete", data: { confirm: "Вы уверены?" }, class: "button button-red button-small" %>
       </div>
+      
     <% end %>
   </div>
 </div>
