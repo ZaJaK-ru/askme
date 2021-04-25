@@ -8,6 +8,7 @@ class User < ApplicationRecord
   attr_accessor :password
 
   has_many :questions
+  has_many :asked_questions, class_name: 'Question', foreign_key: :author_id, dependent: :nullify
 
   before_validation :normalize_username_and_email
 
