@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   attr_accessor :password
 
-  has_many :questions
+  has_many :questions, dependent: :destroy
   has_many :asked_questions, class_name: 'Question', foreign_key: :author_id, dependent: :nullify
 
   before_validation :normalize_username_and_email
@@ -20,6 +20,8 @@ class User < ApplicationRecord
 
   validates :password, presence: true, on: :create
   validates :password, confirmation: true
+
+  validates :bgcolor, format: { with /\A#\h{6}\z/ }
 
   before_save :encrypt_password
 
