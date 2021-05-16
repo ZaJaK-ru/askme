@@ -10,7 +10,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.author = current_user
 
-    if @question.save
+    if check_captcha(@question) && @question.save
       redirect_to user_path(@question.user), notice: 'Вопрос задан'
     else
       render :edit
@@ -41,6 +41,10 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.find(params[:id])
+  end
+
+  def check_captcha(model)
+    current_user.present? || verify_recaptcha(model: model)
   end
 
   def question_params
