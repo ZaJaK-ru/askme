@@ -2,6 +2,7 @@
   <div class="buffer-both">
     <h1 class="title-medium">Наши пользователи</h1>
   </div>
+
   <% @users.each do |user| %>
     <div class="users-list-item">
       <div class="user-image-div user-image-div-small">
@@ -9,4 +10,14 @@
       </div>
     </div>
   <% end %>
+
+  <div class="buffer-both">
+    <h2>Поиск вопросов по хештегам:</h2>
+  </div>
+
+  <div class="hashtags buffer-top">  
+    <% @hashtags_all.each do |hashtag| %>
+      <%= link_to "##{ hashtag.name }", hashtag_path(hashtag.id) %>
+    <% end %>
+  </div>
 </div>
