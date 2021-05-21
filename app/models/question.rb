@@ -1,28 +1,25 @@
 class Question < ApplicationRecord
   belongs_to :user
   belongs_to :author, class_name: 'User', optional: true
-  has_and_belongs_to_many :hashtags
+  has_many :question_hashtag, dependent: :destroy
+  has_many :hashtags, through: :question_hashtag
 
   validates :text, presence: true
   validates :text, length: { maximum: 255 }
 
-  after_commit :update_hashtags, on: [:create, :update]
+  after_save_commit :update_hashtags
 
-  before_destroy :delete_hashtag
+  before_destroy :delete_hashtags
 
   private
 
   def update_hashtags
-    question = Question.find_by(id: self.id)
-    question.hashtags.clear
-    hashtags = "#{text} #{answer}".scan(/#[[:alpha:]]+/)
-    hashtags.uniq.map do |tag|
-      hashtag = Hashtag.find_or_create_by(name: tag.downcase.delete('#'))
-      question.hashtags << hashtag
+    self.hashtags = "#{text} #{answer}".scan(/#[[:alpha:]]+/).uniq.map do |tag|
+      Hashtag.find_or_create_by(name: tag.downcase.delete('#'))
     end
   end
 
-  def delete_hashtag
+  def delete_hashtags
     hashtags.each { |hashtag| hashtag.destroy }
   end
 end
