@@ -1,8 +1,6 @@
 class HashtagsController < ApplicationController
   def show
-    @hashtag = Hashtag.find_by!(id: params[:id])
+    @hashtag = Hashtag.find_by!(name: params[:name])
     @questions = @hashtag.questions
-
-    redirect_to root_path, alert: "Нет таких вопросов!" if @questions.blank?
   end
 end

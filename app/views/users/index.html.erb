@@ -16,8 +16,8 @@
   </div>
 
   <div class="hashtags buffer-top">  
-    <% @hashtags_all.each do |hashtag| %>
-      <%= link_to "##{ hashtag.name }", hashtag_path(hashtag.id) %>
+    <% @hashtags.each do |hashtag| %>
+      <%= link_to "##{ hashtag.name }", hashtag_path(hashtag.name) %>
     <% end %>
   </div>
 </div>

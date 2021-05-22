@@ -1,4 +1,10 @@
 class Hashtag < ApplicationRecord
-  has_many :question_hashtag, dependent: :destroy
-  has_many :questions, through: :question_hashtag
+  HASHTAG_REGEXP = /#[[:alpha:]]+/.freeze
+
+  has_many :hashtag_questions, dependent: :destroy
+  has_many :questions, through: :hashtag_questions
+
+  def self.only_uniq
+    joins(:questions).uniq
+  end
 end
