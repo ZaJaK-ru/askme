@@ -4,7 +4,5 @@ class Hashtag < ApplicationRecord
   has_many :hashtag_questions, dependent: :destroy
   has_many :questions, through: :hashtag_questions
 
-  def self.only_uniq
-    joins(:questions).uniq
-  end
+  scope :only_uniq, -> { joins(:questions).distinct }
 end
