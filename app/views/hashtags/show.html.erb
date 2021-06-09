@@ -6,8 +6,6 @@
 
 <div class="user-questions buffer-both">
   <div class="questions-list">
-    <% @questions.each do |question| %>
-      <%= render @questions, object: question %>
-    <% end %>
+    <%= render @questions %>
   </div>
 </div>
